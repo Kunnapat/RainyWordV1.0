@@ -11,18 +11,9 @@ import javax.swing.JOptionPane;
 
 public class Server {
 	private HomeServer homeFrame;
-	private static int serverTime;
 	private static int serverTime2;
-
-	private static int clientTime;
-	private static int clientTime2;
-	
-	private static int serverScore=0;	
-	private static int clientScore=0;
-	
 	private static String serverName;
 	private static String clientName;
-	private static String currentPlayer;
 	public Server() throws NumberFormatException, ScriptException{
 		serverName = JOptionPane.showInputDialog("Please enter you name");
 		homeFrame = HomeServer.createAndShowGUI();

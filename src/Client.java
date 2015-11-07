@@ -21,12 +21,6 @@ import javax.swing.JOptionPane;
 public class Client {
 	private BufferedReader in;
 	public static PrintWriter out;
-	private int serverTime;
-	private int serverTime2;
-	private int clientTime;
-	private int clientTime2;
-	private static int serverScore=0;	
-	private static int clientScore=0;
 	private HomeClient homeFrame;
 	JFrame popUpFrame;
 	public static int[] values = new int[6];
@@ -52,7 +46,7 @@ public class Client {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
 			
-			String response = null;
+		
 			
 			out.println(clientName);
 			serverName = in.readLine();

@@ -218,7 +218,7 @@ public class GameClient extends JFrame{
         Socket socket =new Socket("localhost",3333);  
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(),true);
-		Thread t2 = new Thread(new Runnable(){
+		Thread connection = new Thread(new Runnable(){
 
 			@Override
 			public void run() {
@@ -228,7 +228,7 @@ public class GameClient extends JFrame{
 			}
 			
 		});
-		t2.start();
+		connection.start();
         return frame;
 	}
 
