@@ -27,7 +27,7 @@ public class Client {
 	private int clientTime2;
 	private static int serverScore=0;	
 	private static int clientScore=0;
-	private Home homeFrame;
+	private HomeClient homeFrame;
 	JFrame popUpFrame;
 	public static int[] values = new int[6];
 	private String clientName, serverName;
@@ -36,7 +36,7 @@ public class Client {
 
 		// Layout GUI
 		clientName = JOptionPane.showInputDialog("Please enter you name?");
-		homeFrame = Home.createAndShowGUI();
+		homeFrame = HomeClient.createAndShowGUI();
 	}
 	
 	public void connectToServer() throws UnknownHostException, IOException{
@@ -56,8 +56,8 @@ public class Client {
 			
 			out.println(clientName);
 			serverName = in.readLine();
-			Game.setServerName(serverName);
-			Game.setClientName(clientName);
+			GameClient.setServerName(serverName);
+			GameClient.setClientName(clientName);
 		
 
 	}

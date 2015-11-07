@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Server {
-	private Home homeFrame;
+	private HomeServer homeFrame;
 	private static int serverTime;
 	private static int serverTime2;
 
@@ -25,7 +25,7 @@ public class Server {
 	private static String currentPlayer;
 	public Server() throws NumberFormatException, ScriptException{
 		serverName = JOptionPane.showInputDialog("Please enter you name");
-		homeFrame = Home.createAndShowGUI();
+		homeFrame = HomeServer.createAndShowGUI();
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -65,10 +65,10 @@ public class Server {
 				PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
 				out.println(serverName);
 				clientName = in.readLine();
-				Game.setServerName(serverName);
-				Game.setClientName(clientName);
+				GameServer.setServerName(serverName);
+				GameServer.setClientName(clientName);
 			
-			} catch (IOException e) {
+			} catch (IOException e) { 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
