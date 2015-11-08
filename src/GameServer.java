@@ -45,10 +45,10 @@ public class GameServer extends JFrame{
     String inputWord;
 	static String serverName;
 	static String clientName;
-    JTextField inputField;
+    static JTextField inputField;
     static JButton startButton;
-    boolean gameStarted = false;
-    Thread t1;
+    static boolean gameStarted = false;
+    static Thread t1;
     int score = 0;
     static BufferedReader in;
     static PrintWriter out;
@@ -79,11 +79,12 @@ public class GameServer extends JFrame{
 		gamePanel.setBackground(Color.BLACK);
 		LinkedListItr itr1 = wordList.zeroth();
 		LinkedListItr itr2 = welcomeList.zeroth();
-		int temp = 3;
+		int temp = 5;
 		for(int i = 0; i < color.length; i++){
 			wordList.insert(new Word(temp*-200,color[i]), itr1);
 			temp++;
 		}
+		welcomeList.insert(new Word(170,-150,"-------------------"+clientName+"  has started the game"+"-------------------"), itr2);
 		welcomeList.insert(new Word(170,170,"▒█▀▀█ ░█▀▀█ ▀█▀ ▒█▄░▒█ ▒█░░▒█ 　 ▒█░░▒█ ▒█▀▀▀█ ▒█▀▀█ ▒█▀▀▄"), itr2);
 		welcomeList.insert(new Word(170,190,"▒█▄▄▀ ▒█▄▄█ ▒█░ ▒█▒█▒█ ▒█▄▄▄█ 　 ▒█▒█▒█ ▒█░░▒█ ▒█▄▄▀ ▒█░▒█"), itr2);
 		welcomeList.insert(new Word(170,210,"▒█░▒█ ▒█░▒█ ▄█▄ ▒█░░▀█ ░░▒█░░ 　 ▒█▄▀▄█ ▒█▄▄▄█ ▒█░▒█ ▒█▄▄▀"), itr2);
@@ -96,7 +97,7 @@ public class GameServer extends JFrame{
 		optionPanel = new JPanel();
 		optionPanel.setSize(new Dimension(1000,200));
 		optionPanel.setBackground(Color.GRAY);
-		startButton = new JButton("START");
+		startButton = new JButton("READY");
 		
 		
 		t1 = new Thread(new Runnable(){
@@ -104,7 +105,6 @@ public class GameServer extends JFrame{
 			@Override
 			public void run() {
 				while(gameStarted){
-					
 					repaint();
 					try {
 						Thread.sleep(8);
@@ -127,9 +127,9 @@ public class GameServer extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gameStarted = true;
 				startButton.setEnabled(false);
-				t1.start();
+				inputField.setText("Waiting for " + clientName + " to be ready.");
+				out.println("server ready");
 			}
 			
 			
@@ -140,6 +140,8 @@ public class GameServer extends JFrame{
 		inputField.setBackground(Color.white);
 		inputField.setForeground(Color.black);
 		inputField.setFont(new Font("Menlo",Font.PLAIN,12));
+		inputField.setText("ARE YOU READY ?");
+		inputField.setEnabled(false);
 		inputField.addActionListener(new ActionListener(){
 
 			@Override
@@ -227,8 +229,11 @@ public class GameServer extends JFrame{
 			public void run() {
 				while(true){
 					try {
-						if(in.readLine().equals("started")){
-							startButton.doClick();
+						if(in.readLine().equals("client ready")){
+							t1.start();
+							gameStarted = true;
+							inputField.setText("");
+							inputField.setEnabled(true);
 						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -251,8 +256,7 @@ public class GameServer extends JFrame{
 			Graphics2D g2 = (Graphics2D) g;
 			if(firstTime){
 				g2.setColor(Color.green);
-				g2.setFont(new Font("Menlo",Font.PLAIN,20));  
-				String welcomeText = getWelcometext();
+				g2.setFont(new Font("Menlo",Font.PLAIN,20)); 
 				g2.drawString("▒█▀▀█ ░█▀▀█ ▀█▀ ▒█▄░▒█ ▒█░░▒█ 　 ▒█░░▒█ ▒█▀▀▀█ ▒█▀▀█ ▒█▀▀▄ ", 170, 170);
 				g2.drawString("▒█▄▄▀ ▒█▄▄█ ▒█░ ▒█▒█▒█ ▒█▄▄▄█ 　 ▒█▒█▒█ ▒█░░▒█ ▒█▄▄▀ ▒█░▒█ ", 170, 190);
 				g2.drawString("▒█░▒█ ▒█░▒█ ▄█▄ ▒█░░▀█ ░░▒█░░ 　 ▒█▄▀▄█ ▒█▄▄▄█ ▒█░▒█ ▒█▄▄▀  ", 170, 210);
@@ -278,13 +282,7 @@ public class GameServer extends JFrame{
 		}
 		
 		
-		private String getWelcometext() {
-			String temp = "";
-			for(int i = 0; i < 88; i++){
-				temp = temp + "-";
-			}
-			return temp;
-		}
+		
 
 
 		public void update(){
