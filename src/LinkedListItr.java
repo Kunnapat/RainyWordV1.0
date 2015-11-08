@@ -1,4 +1,6 @@
-public class LinkedListItr
+import java.io.Serializable;
+
+public class LinkedListItr implements Serializable
 {
 	ListNode current;    //interested position 
 

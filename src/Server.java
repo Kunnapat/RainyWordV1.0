@@ -14,7 +14,7 @@ public class Server {
 	private static int serverTime2;
 	private static String serverName;
 	private static String clientName;
-	public Server() throws NumberFormatException, ScriptException{
+	public Server() throws NumberFormatException, ScriptException, IOException{
 		serverName = JOptionPane.showInputDialog("Please enter you name");
 		homeFrame = HomeServer.createAndShowGUI();
 	}

@@ -37,7 +37,7 @@ public class GameClient extends JFrame{
 	static JLabel serverNameLabel;
 	static JLabel clientNameLabel;
 	JFrame popUpFrame;
-	LinkedList wordList = new LinkedList();
+	static LinkedList wordList = new LinkedList();
 	LinkedList welcomeList = new LinkedList();
     String[] color = {"red", "black", "white","grey","green","yellow","orange","purple","pink"};
     String inputWord;
@@ -74,18 +74,18 @@ public class GameClient extends JFrame{
 		gamePanel = new GamePanel();
 		gamePanel.setSize(new Dimension(1000,300));
 		gamePanel.setBackground(Color.BLACK);
-		LinkedListItr itr1 = wordList.zeroth();
+//		LinkedListItr itr1 = wordList.zeroth();
 		LinkedListItr itr2 = welcomeList.zeroth();
-		int temp = 5;
-		for(int i = 0; i < color.length; i++){
-			wordList.insert(new Word(temp*-200,color[i]), itr1);
-			temp++;
-		}
-		welcomeList.insert(new Word(170,-150,"-------------------"+serverName+"  has started the game"+"-------------------"), itr2);
+//		int temp = 5;
+//		for(int i = 0; i < color.length; i++){
+//			wordList.insert(new Word(temp*-200,color[i]), itr1);
+//			temp++;
+//		}
+		welcomeList.insert(new Word(170,-150,"-------------------"+serverName+" has started the game"+"-------------------"), itr2);
 		welcomeList.insert(new Word(170,170,"▒█▀▀█ ░█▀▀█ ▀█▀ ▒█▄░▒█ ▒█░░▒█ 　 ▒█░░▒█ ▒█▀▀▀█ ▒█▀▀█ ▒█▀▀▄"), itr2);
 		welcomeList.insert(new Word(170,190,"▒█▄▄▀ ▒█▄▄█ ▒█░ ▒█▒█▒█ ▒█▄▄▄█ 　 ▒█▒█▒█ ▒█░░▒█ ▒█▄▄▀ ▒█░▒█"), itr2);
 		welcomeList.insert(new Word(170,210,"▒█░▒█ ▒█░▒█ ▄█▄ ▒█░░▀█ ░░▒█░░ 　 ▒█▄▀▄█ ▒█▄▄▄█ ▒█░▒█ ▒█▄▄▀"), itr2);
-		welcomeList.insert(new Word(170,320,"-----------------Press \"START\"to begin-----------------"), itr2);
+		welcomeList.insert(new Word(170,320,"---------------------------------------------------------"), itr2);
 		
 		repaint();
 	}
@@ -214,7 +214,7 @@ public class GameClient extends JFrame{
 	
 	
 	
-	public static GameClient createAndShowGUI() throws UnknownHostException, IOException{
+	public static GameClient createAndShowGUI(LinkedList ll) throws UnknownHostException, IOException{
 		GameClient frame = new GameClient();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(windowWidth,windowHeight); // set the size of GUI
@@ -222,6 +222,7 @@ public class GameClient extends JFrame{
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setResizable(false);
+        wordList = ll;
         Socket socket =new Socket("localhost",3333);  
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(),true);
@@ -231,14 +232,21 @@ public class GameClient extends JFrame{
 			public void run() {
 				while(true){
 					try {
-						if(in.readLine().equals("server ready")){
-							startButton.setEnabled(true);
-							inputField.setText(serverName+" is ready. Are you ready?");
-						}
+						doCommand(in.readLine());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				}
+				
+			}
+
+			private void doCommand(String s) {
+				if(s.equals("server ready")){
+					startButton.setEnabled(true);
+					inputField.setText(serverName+" is ready. Are you ready?");
+				}else{
+					
 				}
 				
 			}
@@ -260,7 +268,7 @@ public class GameClient extends JFrame{
 				g2.drawString("▒█▀▀█ ░█▀▀█ ▀█▀ ▒█▄░▒█ ▒█░░▒█ 　 ▒█░░▒█ ▒█▀▀▀█ ▒█▀▀█ ▒█▀▀▄ ", 170, 170);
 				g2.drawString("▒█▄▄▀ ▒█▄▄█ ▒█░ ▒█▒█▒█ ▒█▄▄▄█ 　 ▒█▒█▒█ ▒█░░▒█ ▒█▄▄▀ ▒█░▒█ ", 170, 190);
 				g2.drawString("▒█░▒█ ▒█░▒█ ▄█▄ ▒█░░▀█ ░░▒█░░ 　 ▒█▄▀▄█ ▒█▄▄▄█ ▒█░▒█ ▒█▄▄▀  ", 170, 210);
-				g2.drawString("-----------------Press \"START\"to begin-----------------", 170, 320);
+				g2.drawString("---------------------------------------------------------", 170, 320);
 				
 				firstTime = false;
 			}else{

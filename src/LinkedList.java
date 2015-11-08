@@ -1,4 +1,6 @@
-class ListNode
+import java.io.Serializable;
+
+class ListNode implements Serializable
 {
 	// Constructors
 	ListNode( Word w )
@@ -17,7 +19,7 @@ class ListNode
 }
 
 
-public class LinkedList
+public class LinkedList implements Serializable
 {    
 	private ListNode header;
 	public LinkedList( )

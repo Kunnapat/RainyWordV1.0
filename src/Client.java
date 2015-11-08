@@ -26,7 +26,7 @@ public class Client {
 	public static int[] values = new int[6];
 	private String clientName, serverName;
 	
-	public Client() throws NumberFormatException, ScriptException {
+	public Client() throws NumberFormatException, ScriptException, UnknownHostException, IOException {
 
 		// Layout GUI
 		clientName = JOptionPane.showInputDialog("Please enter you name?");
